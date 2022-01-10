@@ -4,17 +4,21 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 
-@Entity({name:'users'})
+const bcrypt = require('bcrypt')
+
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -24,5 +28,22 @@ export class User {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt:Date
+  updatedAt: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  public async hashPassword() {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const myPlaintextPassword = 's0//P4$$w0rD';
+    if (this.password)
+      this.password = await bcrypt.hash(myPlaintextPassword, salt);
+
+       
+  
+    }
+ 
+
+
+  
 }
