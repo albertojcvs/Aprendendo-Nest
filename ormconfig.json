@@ -1,0 +1,14 @@
+{
+  "type": "mysql",
+  "host": "db",
+  "port": 3306,
+  "username": "root",
+  "password": "docker",
+  "database": "nest",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": true,
+  "migrations": ["database/migrations/*.js"],
+  "cli": {
+    "migrationsDir": "./database/migrations"
+  }
+}
